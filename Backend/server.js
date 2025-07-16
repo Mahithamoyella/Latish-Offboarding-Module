@@ -5,14 +5,14 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const port = 3000;
+const port = 3095;
 
 // Database configuration
 const pool = new Pool({
     user: 'postgres',
-    host: 'localhost',
+    host: 'postgres',
     database: 'offboarding_db',
-    password: 'root',
+    password: 'admin834',
     port: 5432,
 });
 
@@ -444,5 +444,5 @@ app.post('/api/offboarding/check-duplicate', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://34.239.111.211:${port}`);
 });
