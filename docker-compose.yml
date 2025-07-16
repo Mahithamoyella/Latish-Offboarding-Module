@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: offboarding_postgres
+    ports:
+      - "5495:5432"
+    environment:
+      POSTGRES_DB: offboarding_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin834
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - offboarding-net
+
+  backend:
+    build: ./Backend
+    container_name: offboarding_backend
+    ports:
+      - "3095:3095"
+    depends_on:
+      - postgres
+    volumes:
+      - ./Backend/uploads:/app/uploads
+    networks:
+      - offboarding-net
+
+  employee-offboarding:
+    build: ./Employee-Offboarding
+    container_name: offboarding_employee
+    ports:
+      - "8150:80"
+    depends_on:
+      - backend
+    networks:
+      - offboarding-net
+
+  hr-offboarding:
+    build: ./HR-Offboarding
+    container_name: offboarding_hr
+    ports:
+      - "8151:80"
+    depends_on:
+      - backend
+    networks:
+      - offboarding-net
+
+volumes:
+  pgdata:
+
+networks:
+  offboarding-net:
+
